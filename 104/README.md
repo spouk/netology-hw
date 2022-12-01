@@ -19,14 +19,14 @@
 
 ### Задание 2
 
-![2-1](https://github.com/spouk/netology-hw/tree/main/104/img/2-1.png)
-![2-2](https://github.com/spouk/netology-hw/tree/main/104/img/2-2.png)
+![2-1](/img/2-1.png)
+![2-2](/img/2-2.png)
 
 ---
 
 ### Задание 3
 
-![3](https://github.com/spouk/netology-hw/tree/main/104/img/3-1.png)
+![3](img/3-1.png)
 
 
 
