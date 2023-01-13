@@ -23,6 +23,6 @@ website/node_modules
 website/vendor
 vendor/
 
-tasks
+tasks*
 # Coverage
 coverage.txt
