@@ -1,0 +1,62 @@
+- name: 'install  rabbitmq cluster for nodes incoming list hosts part'
+  hosts: newvnodes
+  gather_facts: true
+  vars:
+      nodes:
+        - ["192.168.1.45","node2"]
+        - ["192.168.1.46","node3"]
+        - ["192.168.1.47","node4"]
+  become: yes
+  tasks:
+   - name:  install rabbitmq-server on node if remote host Centos
+     block:
+       - name: adding to hosts
+         lineinfile:
+            path: /etc/hosts
+            line: "{{ item[0] }}   {{ item[1] }}"
+            state: present
+         loop: "{{ nodes}}"
+
+       - name: Install repo
+         ansible.builtin.yum:
+           name:
+           - wget
+           - centos-release-rabbitmq-38
+           state: present
+
+       - name: Install  erlang and rabbitmq-server
+         ansible.builtin.yum:
+           name:
+           - rabbitmq-server
+           state: present
+
+       - name: enable + start service rabbitmq server
+         ansible.builtin.service:
+           name: rabbitmq-server
+           state: started
+           enabled: True
+
+       - name: config rabbitmq server + install some soft
+         shell: |
+           wget http://localhost:15672/cli/rabbitmqadmin -P /usr/bin; chmod +x /usr/bin/rabbitmqadmin
+           rabbitmq-plugins enable rabbitmq_management
+           rabbitmqctl add_user admin admin
+           rabbitmqctl change_password admin admin
+           rabbitmqctl set_user_tags admin administrator
+           rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+           rabbitmqctl set_policy ha-all "^ha\." '{"ha-mode":"all"}'
+           sh -c "echo 'CLUSTERTESTRB$' > /var/lib/rabbitmq/.erlang.cookie"
+           systemctl restart rabbitmq-server.service
+
+       - name: enable cluster
+         shell: |
+            rabbitmqctl stop_app
+            rabbitmqctl join_cluster "rabbit@node2"
+            rabbitmqctl start_app
+            rabbitmqctl cluster_status
+
+     when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_version'] == '9'
+     become: true
+     become_user: root
+     ignore_errors: true
+
