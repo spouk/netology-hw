@@ -25,6 +25,10 @@ vendor/
 
 vagrant/*
 
+desc*
 tasks*
 # Coverage
 coverage.txt
+Dockerfile
+Docker/*
+ansible.cfg
