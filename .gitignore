@@ -32,3 +32,4 @@ coverage.txt
 Dockerfile
 Docker/*
 ansible.cfg
+*.txt
