@@ -87,7 +87,9 @@ https://hub.docker.com/repository/docker/cyberspouk/centosansible
 #### Задание 1
 Предлагаю уточнить, как произошла замена стартовой страницы.
 так как постановка задачи неопределенная в части реализации способа доставки отображаемой страницы я добавлял
-docker cp /tmp/index.html c4b649e7f0e5:/usr/share/nginx/html
+```html
+    docker cp /tmp/index.html <idcontainer>:usr/share/nginx/html
+```
 другим вариантом было бы  замещение контейнерного пути /usr/share/nginx  монтированием внешней директории
 
 #### Задание 2
