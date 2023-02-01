@@ -111,3 +111,49 @@ https://hub.docker.com/repository/docker/cyberspouk/centosansible
 
 
 
+
+--
+# up2
+--
+
+Задание 1
+Это не совсем верное решение. Нужно добавить файл в самом dockerfile - посмотрите, что делает команда COPY. Иначе не получится собираться новые контейнеры в автоматическом режиме. Попробуете?
+```dockerfile
+FROM centos:7
+MAINTAINER "aleksey.martynenko" <cyberspouk@gmail.com>
+RUN yum -y update; yum clean all
+RUN yum install -y epel-release && yum clean all && yum makecache && yum install -y nginx
+RUN yum install -y lsof curl wget mc net-tools iproute2 vim
+EXPOSE 80
+COPY index.html /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### index.html
+```html
+    <html>
+    <head>
+    Hey, Netology
+    </head>
+    <body>
+    <h1>I’m DevOps Engineer!</h1>
+    </body>
+```
+>  == > link docker image https://hub.docker.com/repository/docker/cyberspouk/centosnginx
+
+
+Задание 2
+> Мы с вами говорим об одном и том же?
+
+я речь веду об этом
+![22](img/22.png)
+по таким "монолитам" можно проводить декомпозицию - разнесение функционала по отдельным контейнерам =
+микросервисная архитектура
+
+> Это всё будет работать на примере бухгалтерской программы или чего-то подобного?
+
+серверную часть - да, речь ведь про "высоконагруженное монолитное приложение"
+для примера 1С - есть примеры развертываний сервера в контейнере, + сопутствующий "обвес" в виде 
+баз(ы) данных 
+
+

@@ -1,0 +1,16 @@
+FROM centos:7
+MAINTAINER "aleksey.martynenko" <cyberspouk@gmail.com>
+ENV container docker
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+RUN yum install -y epel-release && yum clean all && yum makecache
+RUN yum check-update; \
+    yum install -y ansible
+RUN  mkdir /ansible && \
+     mkdir -p /etc/ansible && \
+     echo 'localhost' > /etc/ansible/hosts \
+     mkdir roles
+WORKDIR /ansible
+COPY ansbile.cfg /ansible/
+CMD  [ "ansible-playbook", "--version" ]
+
