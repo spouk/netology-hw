@@ -7,16 +7,38 @@
 город нахождения магазина;
 количество пользователей, закреплённых в этом магазине.
 ```sql92
+select
+    -- family and name person
+    s.first_name, s.last_name,
+    -- store town place
+    (select city from city where a.city_id = city.city_id) as town,
+    -- count customers
+    (select count(cu.customer_id) from customer cu where s.store_id = cu.store_id)  as countcustomer
+from staff s
+         left join store ss on ss.manager_staff_id = s.staff_id
+         left join address a on s.address_id = a.address_id
+where  (select count(cu.customer_id) from customer cu where s.store_id = cu.store_id)  > 300;
 
 ```
 ### Задание 2
 Получите количество фильмов, продолжительность которых больше средней продолжительности всех фильмов.
 ```sql92
+select count(f.film_id) as countfilms
+from film f
+where f.length > (
+    select avg(ff.length) from film ff
+    );
 
 ```
 ### Задание 3
 Получите информацию, за какой месяц была получена наибольшая сумма платежей, и добавьте информацию по количеству аренд за этот месяц.
 ```sql92
+select month(p.payment_date) as mount, sum(p.amount) as totalammount, count(r.rental_id) as countrental
+from payment p
+left join rental r on r.rental_id = p.rental_id
+group by month(p.payment_date)
+order by totalammount desc
+limit 1
 
 ```
 Дополнительные задания (со звёздочкой*)
@@ -25,101 +47,23 @@
 ### Задание 4*
 Посчитайте количество продаж, выполненных каждым продавцом. Добавьте вычисляемую колонку «Премия». Если количество продаж превышает 8000, то значение в колонке будет «Да», иначе должно быть значение «Нет».
 ```sql92
+select f.first_name, f.last_name, f.email,
+       count(p.payment_id) as countpays,
+       case
+           when count(p.payment_id) > 8000 then 'Да'
+           else 'Нет'
+           end as addpayment
+from staff f
+         left join payment p on f.staff_id = p.staff_id
+         left join customer c on p.customer_id = c.customer_id
+group by  f.staff_id
 
 ```
 ### Задание 5*
 Найдите фильмы, которые ни разу не брали в аренду.
 ```sql92
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Задание 1
-Получите уникальные названия районов из таблицы с адресами, которые начинаются на “K” и заканчиваются на “a” и не содержат пробелов.
-```sql92
- select a.district
- from address a
- where left(a.district,1) = 'K'
- and right(a.district,1) ='a'
- and position(' ' in a.district) = 0
-```
-
-### Задание 2
-Получите из таблицы платежей за прокат фильмов информацию по платежам, которые выполнялись в промежуток с 15 июня 2005 года по 18 июня 2005 года включительно и стоимость которых превышает 10.00.
-```sql92
-select p.*
-from payment p
- where p.payment_date between  cast('2005-06-15 00:00:00' as datetime ) and cast('2005-06-18 23:59:00' as datetime)
-and p.amount > 10.00
-order by  p.payment_date asc
-
-```
-### Задание 3
-Получите последние пять аренд фильмов.
-```sql92
-select r.*
-from rental r
-order by r.rental_date desc
-limit 5;
-```
-### Задание 4
-Одним запросом получите активных покупателей, имена которых Kelly или Willie.
-Сформируйте вывод в результат таким образом:
-все буквы в фамилии и имени из верхнего регистра переведите в нижний регистр,
-замените буквы 'll' в именах на 'pp'.
-```sql92
-select
- c.customer_id,
- c.store_id,
- lower(c.first_name),
- lower(c.last_name),
- c.email,
- concat_ws('@', lower(left(c.email, position('@' in c.email)-1)), right(c.email,length(c.email) - position('@' in c.email))),
- c.address_id,
- c.active,
- c.create_date,
- c.last_update
-from customer c
-where lower(c.first_name) in ('kelly','willie');
-```
-
-
-Дополнительные задания (со звёздочкой*)
-Эти задания дополнительные, то есть не обязательные к выполнению, и никак не повлияют на получение вами зачёта по этому домашнему заданию. Вы можете их выполнить, если хотите глубже шире разобраться в материале.
-
-### Задание 5*
-Выведите Email каждого покупателя, разделив значение Email на две отдельных колонки: в первой колонке должно быть значение, указанное до @, во второй — значение, указанное после @.
-```sql92
-select
-    left(c.email, position('@' in c.email)-1) as firstname,
-    right(c.email,length(c.email) - position('@' in c.email)) as lastname
-from customer c
-
-```
-### Задание 6*
-Доработайте запрос из предыдущего задания, скорректируйте значения в новых колонках: первая буква должна быть заглавной, остальные — строчными.
-```sql92
-select
-    concat(left(left(c.email, position('@' in c.email)-1),1), lower(right(left(c.email, position('@' in c.email)-1), length(left(c.email, position('@' in c.email)-1)) - 1)))  as firstname,
-    right(c.email,length(c.email) - position('@' in c.email)) as lastname
-from customer c
-
+select f.*
+from film f
+where f.film_id not in (select film_id from inventory)
 ```
 
