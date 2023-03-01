@@ -1,3 +1,8 @@
+terraform.*
+key.json
+.terraform
+.terraform*
+
 *.dll
 *.exe
 .DS_Store
