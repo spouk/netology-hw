@@ -244,7 +244,7 @@ plugin_dir=/opt/bitnami/mysql/lib/plugin
  transaction_prealloc_size=1M
 # - memory pool
 # выделение буфера из рамы под индексы,данные
- innodb_buffer_pool_size=14
+ innodb_buffer_pool_size=14G
 # - log size
 # определение размер логфайла, чем больше размер тем быстрее запись, минус - при падении увеличение времени восстановления пропорциально размеру
  innodb_log_file_size=100M
@@ -260,3 +260,27 @@ socket=/opt/bitnami/mysql/tmp/mysql.sock
 pid_file=/opt/bitnami/mysql/tmp/mysqld.pid
 
 ```
+
+
+### upd: доработка
+
+> q:
+    Здравствуйте, Алексей!
+    Спасибо за выполненную работу.
+    Практически все сделано верно, небольшое замечание по 4 заданию, почему innodbbufferpool_size=14? Может стоит сделать больше?
+    Прошу доработать!
+
+исходя из постановки задачи 
+ > буффер кеширования 30% от ОЗУ;
+
+
+расчет размера производился по формуле размер RAM / 30 * 100 
+учитывая, что на железе, где я разворачивал контейнер количество RAM
+```shell
+╰─➤  free -g
+               total        used        free      shared  buff/cache   available
+Mem:              47          32           0           3          13           9
+Swap:              0           0           0
+
+```
+то 30% от этого размера будет = 30% или 14G 
