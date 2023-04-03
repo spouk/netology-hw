@@ -53,6 +53,9 @@ services:
 Подключитесь к восстановленной БД и проведите операцию ANALYZE для сбора статистики по таблице.
 Используя таблицу pg_stats, найдите столбец таблицы orders с наибольшим средним значением размера элементов в байтах.
 Приведите в ответе команду, которую вы использовали для вычисления, и полученный результат.
+```sql92
+select tablename,attname,avg_width from pg_stats where tablename = 'orders'  order by avg_width desc limit 1;
+```
 
 ```sql92
 select tablename,attname,avg_width from pg_stats 
@@ -81,7 +84,7 @@ start transaction;
     create table orders_price_tail partition of orders_shard for values from (500) to (2147483647); -- 4byte=>max size integer type-1
     create index  on  orders_shard (id);
     drop table orders;
-    alter table orders_new rename to orders;
+    alter table orders_shard rename to orders;
 commit;
 
 ```
