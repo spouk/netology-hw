@@ -1,0 +1,17 @@
+[sources.dummy_logs]
+type = "demo_logs"
+format = "syslog"
+interval = 1
+
+[transforms.parse_logs]
+type = "remap"
+inputs = ["dummy_logs"]
+source = '''
+. = parse_syslog!(string!(.message))
+'''
+
+[sinks.my_sink_id]
+type = "clickhouse"
+inputs = [ "parse_logs" ]
+endpoint = "http://127.0.0.1:8123"
+table = "logs.logs"

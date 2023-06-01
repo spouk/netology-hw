@@ -1,0 +1,79 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        enabled: true
+        state: restarted
+    - name: Start vector service
+      become: true
+      ansible.builtin.service:
+        name: vector
+        enabled: true
+        daemon_reload: true
+        state: restarted
+  tasks:
+    - name: Install clickhouse on remote host
+      block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+            mode: '0440'
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+            mode: '0440'
+    - name: Install clickhouse packages
+      become: true
+      ansible.builtin.yum:
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+      notify: Start clickhouse service
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc != 82
+      changed_when: create_db.rc == 0
+
+    - name: Vector installed or not
+      ansible.builtin.command: vector --version
+      register: is_installed
+      ignore_errors: true
+
+    - name: Install and configure vector on remote host
+      when:
+        - is_installed is failed
+        - ansible_distribution == "CentOS"
+      block:
+        - name: Get Vector distrib
+          ansible.builtin.get_url:
+            url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+            dest: "./vector-{{ vector_version }}-1.x86_64.rpm"
+            mode: '0440'
+        - name: Install vector package
+          become: true
+          ansible.builtin.yum:
+            name:
+              - vector-{{ vector_version }}-1.x86_64.rpm
+        - name: Make vector config file remote host
+          ansible.builtin.file:
+            path: /etc/vector/vector.toml
+            state: touch
+            mode: u=rw,g=r,o=r
+
+        - name: Build context vector config file from template
+          ansible.builtin.template:
+            src: "file/vector.j2"
+            dest: "/etc/vector/vector.toml"
+            backup: true
+            mode: '0640'
+          notify: Start vector service
