@@ -1,0 +1,21 @@
+clickhouse:
+  hosts: 
+    clickhouse01: 
+     ansible_host:  62.84.112.240
+     ansible_user:  centos
+     ansible_connection: ssh 
+     
+vector:
+  hosts:
+    vector01:
+     ansible_host: 158.160.48.2
+     ansible_user: centos 
+     ansible_connection: ssh 
+   
+lighthouse:
+  hosts:
+    lighthouse01:
+     ansible_host: 158.160.52.62
+     ansible_user: centos
+     ansible_connection: ssh
+

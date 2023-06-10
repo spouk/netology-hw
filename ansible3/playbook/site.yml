@@ -1,0 +1,165 @@
+---
+- name: Install Clickhouse
+  become: true
+  hosts: clickhouse
+#  handlers:
+  tasks:
+    - name: Disable SELinux
+      ansible.posix.selinux:
+        state: disabled
+
+    - name: Install clickhouse on remote host
+      block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+            mode: '0440'
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+            mode: '0440'
+    - name: Install clickhouse packages
+      ansible.builtin.yum:
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+
+    - name: Open access remote access to db
+      ansible.builtin.copy:
+        src: file/listen.xml
+        dest: /etc/clickhouse-server/config.d/listen.xml
+        owner: root
+        group: root
+
+    - name: Running clickhouse-server
+      ansible.builtin.systemd:
+        enabled: true
+        daemon_reload: true
+        name: clickhouse-server
+        state: started
+      register: resultsys
+
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc != 82
+      changed_when: create_db.rc == 0
+
+- name: Install vector
+  become: true
+  hosts: vector
+  handlers:
+  tasks:
+    - name: Disable SELinux
+      ansible.posix.selinux:
+        state: disabled
+
+    - name: Vector installed or not
+      ansible.builtin.command: vector --version
+      register: is_installed
+      ignore_errors: true
+
+    - name: Install and configure vector on remote host
+      when:
+        - is_installed is failed
+        - ansible_distribution == "CentOS"
+      block:
+        - name: Get Vector distrib
+          ansible.builtin.get_url:
+            url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+            dest: "./vector-{{ vector_version }}-1.x86_64.rpm"
+            mode: '0440'
+        - name: Install vector package
+          become: true
+          ansible.builtin.yum:
+            name:
+              - vector-{{ vector_version }}-1.x86_64.rpm
+        - name: Make vector config file remote host
+          ansible.builtin.file:
+            path: /etc/vector/vector.toml
+            state: touch
+            mode: u=rw,g=r,o=r
+
+        - name: Build context vector config file from template
+          ansible.builtin.template:
+            src: "file/vector.j2"
+            dest: "/etc/vector/vector.toml"
+            backup: true
+            mode: '0640'
+
+        - name: Start vector service
+          ansible.builtin.service:
+            name: vector
+            enabled: true
+            daemon_reload: true
+            state: started
+
+
+- name: Install lighthouse
+  become: true
+  hosts: lighthouse
+  handlers:
+  tasks:
+    - name: Disable SELinux
+      ansible.posix.selinux:
+        state: disabled
+
+    - name: Install and
+      when:
+        - ansible_distribution == "CentOS"
+      block:
+        - name: Install epel repo
+          ansible.builtin.yum:
+            name:
+              - epel-release
+            state: present
+
+        - name: Install nginx
+          ansible.builtin.yum:
+            name:
+              - nginx
+            state: present
+
+        - name: Get lighthouse distrib
+          ansible.builtin.get_url:
+            url: "{{ urldist }}"
+            dest: "/tmp/master.zip"
+            mode: '0440'
+
+        - name: Install lighthouse
+          become: true
+          ansible.builtin.command: unzip /tmp/master.zip -d /var/www
+
+        - name: Build config file from template
+          ansible.builtin.template:
+            src: "file/clickhouse.j2"
+            dest: "/etc/nginx/conf.d/clickhouse.conf"
+            backup: true
+            mode: '0640'
+
+        - name: Start nginx service
+          ansible.builtin.service:
+            name: nginx
+            enabled: true
+            daemon_reload: true
+            state: started
+
+
+#        - name: Build context vector config file from template
+#          ansible.builtin.template:
+#            src: "file/vector.j2"
+#            dest: "/etc/vector/vector.toml"
+#            backup: true
+#            mode: '0640'
+#
+#        - name: Start vector service
+#          ansible.builtin.service:
+#            name: vector
+#            enabled: true
+#            daemon_reload: true
+#            state: started

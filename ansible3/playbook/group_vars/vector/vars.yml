@@ -1,0 +1,6 @@
+---
+# --vector variables
+vector_version: "0.30.0"
+vector_packages:
+    - vector
+
