@@ -171,7 +171,7 @@ Starting galaxy role install process
 
 + https://github.com/spouk/lighthouse-role/tree/0.0.1 
 + https://github.com/spouk/vector-role/tree/0.0.1
-+ 
++ https://github.com/spouk/netology-hw/tree/main/ansible4/playbook
 
 ### Как оформить решение задания
 
