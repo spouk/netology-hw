@@ -119,4 +119,3 @@ CREATE TABLE public.orders1 (
 
 ```
 
-

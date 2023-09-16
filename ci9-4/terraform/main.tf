@@ -1,5 +1,3 @@
-
-
 resource "yandex_vpc_network" "develop" {
   name = var.vm_web_vpc_name
 }
@@ -15,11 +13,10 @@ data "yandex_compute_image" "ubuntu" {
 }
 
 //-----------------------------------------------------------------------
-// VM1 [web]
+// VM1
 // ----------------------------------------------------------------------
-resource "yandex_compute_instance" "platform" {
-  count =  2
-  name        = "${local.nameVMweb}-${count.index}"
+resource "yandex_compute_instance" "cicd1" {
+  name        = "${local.nameVMweb}"
   platform_id = var.vm_web_instanse_platform
   resources {
     cores =  var.vm_web_resources.cores
@@ -47,9 +44,9 @@ resource "yandex_compute_instance" "platform" {
 }
 
 //-----------------------------------------------------------------------
-// VM2 [db]
+// VM2
 // ----------------------------------------------------------------------
-resource "yandex_compute_instance" "platformDB" {
+resource "yandex_compute_instance" "cicd2" {
   name        = local.nameVMdb
   platform_id = var.vm_db_instanse_platform
   resources {

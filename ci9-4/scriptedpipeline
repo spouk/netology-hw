@@ -1,0 +1,23 @@
+node("agent"){
+     environment {
+        PATH="${env.WORKSPACE}/build-dir:/usr/local/bin:${env.PATH}"
+    }
+
+    stage("Git checkout"){
+        git credentialsId: '7943d9ab-efa7-4520-b128-48f13295c4ae', url: 'https://github.com/aragastmatb/example-playbook.git'
+    }
+
+    stage("Run playbook"){
+        sh 'echo $PATH'
+        sh 'export PATH=$PATH:/usr/local/bin;  ansible --version'
+
+        if ( "${prod_run}" == "true" ){
+            sh 'export PATH=$PATH:/usr/local/bin; ansible-playbook site.yml -i inventory/prod.yml'
+        }
+        else{
+            sh 'export PATH=$PATH:/usr/local/bin;  ansible-playbook site.yml -i inventory/prod.yml --check --diff'
+        }
+
+    }
+}
+

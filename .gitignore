@@ -1,7 +1,31 @@
+mnt-homeworks
+ter-homeworks
+
+develop
+my_own_collection
+
+# local ansible files
+.ansible
+
+# Local .terraform directories and files,
+**/.terraform/*
+.terraform*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# own secret vars store.
+*personal.auto.tfvars*
+
+
+
 terraform.*
 key.json
 .terraform
 .terraform*
+
+ter-homeworks/*
 
 *.dll
 *.exe
@@ -40,4 +64,5 @@ ansible.cfg
 *.txt
 key.json
 src/*
+src*
 
