@@ -1,0 +1,207 @@
+[0KRunning with gitlab-runner 16.3.1 (f5dfa4d1)[0;m[0K  on fucker s6T1ps-ZW, system ID: s_c573dc8e1ae3[0;m
+section_start:1695251229:prepare_executor
+[0K[0K[36;1mPreparing the "shell" executor[0;m[0;m
+[0KUsing Shell (bash) executor...[0;m
+section_end:1695251229:prepare_executor
+[0Ksection_start:1695251229:prepare_script
+[0K[0K[36;1mPreparing environment[0;m[0;m
+Running on gitlab-runner...
+section_end:1695251229:prepare_script
+[0Ksection_start:1695251229:get_sources
+[0K[0K[36;1mGetting source from Git repository[0;m[0;m
+[32;1mFetching changes with git depth set to 20...[0;m
+Reinitialized existing Git repository in /home/gitlab-runner/builds/s6T1ps-ZW/0/cyberspouk/netologia-test/.git/
+[32;1mChecking out 6c487cd9 as detached HEAD (ref is main)...[0;m
+[32;1mSkipping Git submodules setup[0;m
+section_end:1695251229:get_sources
+[0Ksection_start:1695251229:step_script
+[0K[0K[36;1mExecuting "step_script" stage of the job script[0;m[0;m
+[32;1m$ docker login --username $DOCKER_USERNAME --password $DOCKER_REGISTR_TOKEN cr.yandex[0;m
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/gitlab-runner/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[32;1m$ docker build -t $IMAGE_TAG .[0;m
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 635B done
+#1 DONE 0.0s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/centos:7
+#3 DONE 1.0s
+
+#4 [1/8] FROM docker.io/library/centos:7@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 122B done
+#5 DONE 0.0s
+
+#6 [6/8] COPY python_api/requirements.txt python_api/requirements.txt
+#6 CACHED
+
+#7 [2/8] WORKDIR /usr/src/cache
+#7 CACHED
+
+#8 [7/8] RUN pip3.7 install -r python_api/requirements.txt
+#8 CACHED
+
+#9 [3/8] RUN yum install gcc openssl-devel bzip2-devel libffi-devel zlib-devel xz-devel wget make cmake lsof -y
+#9 CACHED
+
+#10 [4/8] RUN cd /usr/src; wget https://www.python.org/ftp/python/3.7.11/Python-3.7.11.tgz; tar xzf Python-3.7.11.tgz; cd Python-3.7.11; ./configure --enable-optimizations; make altinstall; rm /usr/src/Python-3.7.11.tgz
+#10 CACHED
+
+#11 [5/8] RUN mkdir python_api
+#11 CACHED
+
+#12 [8/8] COPY python_api/python-app.py python_api/python-app.py
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 writing image sha256:7a418de43e287f332ff4be077a3094d27b8bfec536c48f1d01b43328c1ffd3ed done
+#13 naming to docker.io/library/gitlab-6c487cd9 done
+#13 DONE 0.0s
+[32;1m$ echo $IMAGE_TAG $IMAGE_NAME[0;m
+gitlab-6c487cd9 hello:gitlab-6c487cd9
+[32;1m$ echo $IDREGISTR/$IMAGE_NAME[0;m
+cr.yandex/crpl7rt3drhevsj71kin/hello:gitlab-6c487cd9
+[32;1m$ docker tag   $IMAGE_TAG $IDREGISTR/$IMAGE_NAME[0;m
+[32;1m$ docker push $IDREGISTR/$IMAGE_NAME[0;m
+The push refers to repository [cr.yandex/crpl7rt3drhevsj71kin/hello]
+91768babc112: Preparing
+05225ab58fc2: Preparing
+7d54b76e6245: Preparing
+d585ae195040: Preparing
+9f96d3621d8b: Preparing
+aeb94cf17ecf: Preparing
+a44724142194: Preparing
+174f56854903: Preparing
+aeb94cf17ecf: Waiting
+a44724142194: Waiting
+174f56854903: Waiting
+7d54b76e6245: Layer already exists
+05225ab58fc2: Layer already exists
+d585ae195040: Layer already exists
+9f96d3621d8b: Layer already exists
+91768babc112: Layer already exists
+aeb94cf17ecf: Layer already exists
+a44724142194: Layer already exists
+174f56854903: Layer already exists
+gitlab-6c487cd9: digest: sha256:536b9e14d388db4598400732176ad3cdf371f33d748b70b7c43141d1025ff31f size: 1994
+section_end:1695251233:step_script
+[0Ksection_start:1695251233:cleanup_file_variables
+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+section_end:1695251233:cleanup_file_variables
+[0K[32;1mJob succeeded[0;m
+
+
+[0KRunning with gitlab-runner 16.3.1 (f5dfa4d1)[0;m[0K  on fucker s6T1ps-ZW, system ID: s_c573dc8e1ae3[0;m
+section_start:1695251236:prepare_executor
+[0K[0K[36;1mPreparing the "shell" executor[0;m[0;m
+[0KUsing Shell (bash) executor...[0;m
+section_end:1695251236:prepare_executor
+[0Ksection_start:1695251236:prepare_script
+[0K[0K[36;1mPreparing environment[0;m[0;m
+Running on gitlab-runner...
+section_end:1695251236:prepare_script
+[0Ksection_start:1695251236:get_sources
+[0K[0K[36;1mGetting source from Git repository[0;m[0;m
+[32;1mFetching changes with git depth set to 20...[0;m
+Reinitialized existing Git repository in /home/gitlab-runner/builds/s6T1ps-ZW/0/cyberspouk/netologia-test/.git/
+[32;1mChecking out 6c487cd9 as detached HEAD (ref is main)...[0;m
+[32;1mSkipping Git submodules setup[0;m
+section_end:1695251236:get_sources
+[0Ksection_start:1695251236:step_script
+[0K[0K[36;1mExecuting "step_script" stage of the job script[0;m[0;m
+[32;1m$ docker build -t $CI_REGISTRY/cyberspouk/netologia-test/python-api:latest .[0;m
+#0 building with "default" instance using docker driver
+
+#1 [internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 635B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/centos:7
+#3 DONE 0.5s
+
+#4 [1/8] FROM docker.io/library/centos:7@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 122B done
+#5 DONE 0.0s
+
+#6 [4/8] RUN cd /usr/src; wget https://www.python.org/ftp/python/3.7.11/Python-3.7.11.tgz; tar xzf Python-3.7.11.tgz; cd Python-3.7.11; ./configure --enable-optimizations; make altinstall; rm /usr/src/Python-3.7.11.tgz
+#6 CACHED
+
+#7 [2/8] WORKDIR /usr/src/cache
+#7 CACHED
+
+#8 [3/8] RUN yum install gcc openssl-devel bzip2-devel libffi-devel zlib-devel xz-devel wget make cmake lsof -y
+#8 CACHED
+
+#9 [5/8] RUN mkdir python_api
+#9 CACHED
+
+#10 [6/8] COPY python_api/requirements.txt python_api/requirements.txt
+#10 CACHED
+
+#11 [7/8] RUN pip3.7 install -r python_api/requirements.txt
+#11 CACHED
+
+#12 [8/8] COPY python_api/python-app.py python_api/python-app.py
+#12 CACHED
+
+#13 exporting to image
+#13 exporting layers done
+#13 writing image sha256:7a418de43e287f332ff4be077a3094d27b8bfec536c48f1d01b43328c1ffd3ed done
+#13 naming to fucker.gitlab.yandexcloud.net:5050/cyberspouk/netologia-test/python-api:latest done
+#13 DONE 0.0s
+[32;1m$ docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY[0;m
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/gitlab-runner/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[32;1m$ docker push $CI_REGISTRY/cyberspouk/netologia-test/python-api:latest[0;m
+The push refers to repository [fucker.gitlab.yandexcloud.net:5050/cyberspouk/netologia-test/python-api]
+91768babc112: Preparing
+05225ab58fc2: Preparing
+7d54b76e6245: Preparing
+d585ae195040: Preparing
+9f96d3621d8b: Preparing
+aeb94cf17ecf: Preparing
+a44724142194: Preparing
+174f56854903: Preparing
+aeb94cf17ecf: Waiting
+a44724142194: Waiting
+174f56854903: Waiting
+9f96d3621d8b: Layer already exists
+05225ab58fc2: Layer already exists
+91768babc112: Layer already exists
+7d54b76e6245: Layer already exists
+d585ae195040: Layer already exists
+aeb94cf17ecf: Layer already exists
+a44724142194: Layer already exists
+174f56854903: Layer already exists
+latest: digest: sha256:536b9e14d388db4598400732176ad3cdf371f33d748b70b7c43141d1025ff31f size: 1994
+section_end:1695251238:step_script
+[0Ksection_start:1695251238:cleanup_file_variables
+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+section_end:1695251238:cleanup_file_variables
+[0K[32;1mJob succeeded[0;m
+
+

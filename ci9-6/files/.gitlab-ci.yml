@@ -1,0 +1,52 @@
+# FU1
+variables:
+  IMAGE_TAG: gitlab-$CI_COMMIT_SHORT_SHA
+  IMAGE_NAME: hello:$IMAGE_TAG
+stages:
+  - build
+  - build-and-push-image
+  - testing
+  - deploy
+image: docker:20.10.5
+services:
+  - docker:20.10.5-dind
+builder:
+  stage: build
+  script:
+    - docker build -t some_local_build:latest .
+  except:
+    - main
+build-and-push-image:
+  stage: build-and-push-image
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login --username $DOCKER_USERNAME --password $DOCKER_REGISTR_TOKEN cr.yandex
+    - docker build -t $IMAGE_TAG .
+    - echo $IMAGE_TAG $IMAGE_NAME
+    - echo $IDREGISTR/$IMAGE_NAME
+    - docker tag   $IMAGE_TAG $IDREGISTR/$IMAGE_NAME
+    - docker push $IDREGISTR/$IMAGE_NAME
+
+testing:
+  stage: testing
+  script:
+    - if [[ `docker ps -ql` > '0' ]]; then docker stop $(docker ps -ql); fi
+    - docker run -it -d --rm -p 5290:5290 $IDREGISTR/$IMAGE_NAME
+    - docker ps
+    - curl -s -v http://0.0.0.0:5290/rest/api/get_info
+    - docker stop $(docker ps -ql) 2>1 /dev/null
+  except:
+    - main
+
+
+deployer:
+  stage: deploy
+  script:
+    - docker build -t $CI_REGISTRY/cyberspouk/netologia-test/python-api:latest .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY/cyberspouk/netologia-test/python-api:latest
+  only:
+    - main
+
