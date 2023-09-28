@@ -1,0 +1,8 @@
+---
+user_group: "{{ prometheus_user_group }}"
+user_name: "{{ prometheus_user_name }}"
+prometheus_user_name: prometheus
+prometheus_user_group: prometheus
+java_packages:
+  - java-11-openjdk-devel
+  - java-11-openjdk

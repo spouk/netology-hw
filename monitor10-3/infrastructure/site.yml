@@ -1,0 +1,166 @@
+---
+- name:
+  hosts: all
+  become: yes
+  vars_files:
+    - "inventory/promo/group_vars/promo.yml"
+  tasks:
+    - name: Create group
+      become: true
+      group:
+        name: "{{ user_group }}"
+        state: present
+    - name: Create user
+      become: true
+      user:
+        name: "{{ user_name }}"
+        generate_ssh_key: true
+      register: ssh_key_info
+    - name: disable selinux
+      ansible.posix.selinux:
+        state: disabled
+
+#https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+
+- name: install prometheus
+  hosts: prometheus
+  become: yes
+  tasks:
+    - name: get archive and unpack archive with prometheus
+      ansible.builtin.unarchive:
+        src:  https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
+        dest: /tmp/
+        remote_src: yes
+    - name:  make directory for install  prometheus /etc/
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '765'
+        owner: prometheus
+        group: prometheus
+      loop:
+        -  /etc/prometheus
+        - /var/lib/prometheus
+    - name: copy binary prometheus
+      ansible.builtin.copy:
+        src: /tmp/prometheus-2.47.0.linux-amd64/{{ item }}
+        dest: /usr/local/bin/{{ item }}
+        mode: '555'
+        remote_src: yes
+      loop:
+        - prometheus
+        - promtool
+    - name: copy other files  prometheus
+      ansible.builtin.copy:
+        src: /tmp/prometheus-2.47.0.linux-amd64/{{ item }}
+        dest: /etc/prometheus/{{ item }}
+        group: prometheus
+        owner: prometheus
+        remote_src: yes
+      loop:
+        - consoles
+        - console_libraries
+    - name: copy base config for prometheus
+      ansible.builtin.copy:
+        src: files/prometheus.yml
+        dest: /etc/prometheus/prometheus.yml
+        group: prometheus
+        owner: prometheus
+        backup: yes
+    - name: copy systemd file service
+      ansible.builtin.copy:
+        src: files/prometheus.service
+        dest: /etc/systemd/system/prometheus.service
+    - name: enable prometheus service
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: prometheus
+
+- name: install node_exporter
+  hosts: all
+  become: yes
+  tasks:
+    - name: get archive and unpack archive with node_exporter
+      ansible.builtin.unarchive:
+        src:  https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+        dest: /tmp/
+        remote_src: yes
+    - name: copy binary node_exporter
+      ansible.builtin.copy:
+        src: /tmp/node_exporter-1.6.1.linux-amd64/{{ item }}
+        dest: /usr/local/bin/{{ item }}
+        mode: '555'
+        remote_src: yes
+      loop:
+        - node_exporter
+    - name: copy systemd file service
+      ansible.builtin.copy:
+        src: files/node_exporter.service
+        dest: /etc/systemd/system/node_exporter.service
+    - name: enable node_exporter service
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: node_exporter
+
+
+- name: install grafana
+  hosts: grafana
+  become: yes
+  tasks:
+    - name: Install epel-release + yum utils
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release
+        - yum-utils
+    - name: add repo docker
+      ansible.builtin.command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    - name: Install docker
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+    - name: run docker
+      ansible.builtin.systemd_service:
+        name: docker
+        state: restarted
+        enabled: true
+    - name: install docker-compose
+      ansible.builtin.get_url:
+        url: https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '555'
+    - name:  make directory for grafana
+      ansible.builtin.file:
+        path: /etc/grafana
+        state: directory
+        mode: '765'
+    - name: copy docker-compose config for grafana
+      ansible.builtin.copy:
+        src: files/docker-compose.yml
+        dest: /etc/grafana/docker-compose.yml
+        mode: '555'
+    - name: copy docker service for grafana
+      ansible.builtin.copy:
+        src: files/dockercompose-grafana.service
+        dest: /etc/systemd/system/dockercompose-grafana.service
+        mode: '555'
+    - name: enable grafan docker-compose  service
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: dockercompose-grafana
+
+
+
