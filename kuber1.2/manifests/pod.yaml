@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: echoserver
+  name: hello-world
+  namespace: netologia
+spec:
+  containers:
+  - image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+    imagePullPolicy: Always
+    name: es
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+
