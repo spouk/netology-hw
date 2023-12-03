@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: pod-nginx-task2
+  name: pod-nginx-task2
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: pod-nginx-task2
+    ports:
+    - containerPort: 80
+      protocol: TCP
+  initContainers:
+  - name: init-service-pod-nginx-task2
+    image: busybox:1.28
+    command: ['sh', '-c', "until nslookup init-service-pod-nginx-task2.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: init-service-pod-nginx-task2
+spec:
+  selector:
+    app: pod-nginx-task2
+  ports:
+  - protocol: TCP
+    port: 8181
+    targetPort: 80
