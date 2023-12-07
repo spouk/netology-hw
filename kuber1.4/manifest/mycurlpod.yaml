@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-mycurl
+spec:
+  containers:
+  - image: curlimages/curl
+    imagePullPolicy: Always
+    name: pod-mycurl

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicetask1
+spec:
+  selector:
+      app: nginx
+  ports:
+  - name: nginxport
+    protocol: TCP
+    port: 80
+    targetPort: 9001
+  - name: multiport
+    protocol: TCP
+    port: 8080
+    targetPort: 9002
