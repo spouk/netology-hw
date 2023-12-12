@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task1
+  labels:
+    app: multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multitool
+  template:
+    metadata:
+      labels:
+        app: multitool
+    spec:
+      volumes:
+       - name: shara
+         hostPath:
+          path: /tmp/shara
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - containerPort:  8080
+          name: http
+        - containerPort: 44333
+          name: https
+        volumeMounts:
+        - name: shara
+          mountPath: /input/
+      - name: busybox
+        image: busybox
+        command: ['sh','-c','while true; do echo "hello world from busybox" >> /output/sharefile.txt; done']
+        volumeMounts:
+        - name: shara
+          mountPath: /output/
+      restartPolicy: Always
