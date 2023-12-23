@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-netology-service
+spec:
+  selector:
+    name: fucker
+  ports:
+  - name: httpsvc
+    port: 80
+    targetPort: 80
+    protocol: TCP

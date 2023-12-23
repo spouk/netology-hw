@@ -1,0 +1,97 @@
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: nns
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: task1-pv
+##  namespace: nns
+#  labels:
+#    type: local
+#spec:
+#  storageClassName: manual
+#  capacity:
+#    storage: 10M
+#  accessModes:
+#    - ReadWriteMany
+#  hostPath:
+#    path: "/tmp/data"
+#
+#---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: task1-pvc
+##  namespace: nns
+#spec:
+#  accessModes:
+#  - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 10M
+#
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task1
+#  namespace: nns
+  labels:
+    app: multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multitool
+  template:
+    metadata:
+      labels:
+        app: multitool
+    spec:
+      volumes:
+        - name: shara
+          persistentVolumeClaim:
+            claimName: task-pv-claim1
+      containers:
+
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - containerPort:  80
+          name: http
+        - containerPort: 443
+          name: https
+        volumeMounts:
+        - name: shara
+          mountPath: /input/
+
+      - name: busybox
+        image: busybox
+        command: ['sh','-c','while true; do echo "hello world from busybox $(date)">>/output/sharefile.txt; sleep 5 ; done']
+        volumeMounts:
+        - name: shara
+          mountPath: /output/
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netology-frontend-svc
+#  namespace: nns
+spec:
+  selector:
+    app: multitool
+  ports:
+  - name: http
+    port: 7777
+    targetPort: 80
+  - name: https
+    port: 7778
+    targetPort: 443
+
+
+

@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task2
+  labels:
+    app: multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multitool
+  template:
+    metadata:
+      labels:
+        app: multitool
+    spec:
+      volumes:
+        - name: nfsshara
+          persistentVolumeClaim:
+            claimName: my-pvc
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - containerPort:  80
+          name: http
+        - containerPort: 443
+          name: https
+        volumeMounts:
+        - name: nfsshara
+          mountPath: /nfsshara/
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task2-svc
+spec:
+  selector:
+    app: multitool
+  ports:
+  - name: http
+    port: 7777
+    targetPort: 80
+  - name: https
+    port: 7778
+    targetPort: 443
