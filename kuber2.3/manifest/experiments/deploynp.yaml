@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: excm
+data:
+  nginx.conf: |
+    user nginx;
+    worker_processes  1;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen       80;
+          server_name  localhost;
+          location / {
+            root   /usr/share/nginx/html; #Change this line
+            index  index.html index.htm;
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exdeploy
+  labels:
+    app: exdeploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exdeploy
+  template:
+    metadata:
+      labels:
+        app: exdeploy
+    spec:
+      volumes:
+      - name: excm-vlm
+        configMap:
+          name: excm
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+      containers:
+      - name: nginx
+        image: nginx:1.20
+        volumeMounts:
+        - name: excm-vlm
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        ports:
+        - name: http
+          containerPort: 80
+#        - name: https
+#          containerPort: 443
+      restartPolicy: Always
+#
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ex-svc
+spec:
+  selector:
+    app: exdeploy
+  ports:
+  - name: http
+    port: 9999
+    targetPort: 80
+#  - name: https
+#    port: 443
+#    targetPort: 443
+  type: NodePort

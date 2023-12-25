@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  nginx-app.conf: "    \nserver {\n    listen 80 default_server;\n    server_name
+    _;\n\n    default_type text/plain;\n    location / {\n        return 200 'Hi from
+    pod: $hostname.\\n';\n    }\n}\n"
+kind: ConfigMap
+metadata:
+  name: nginx-conf

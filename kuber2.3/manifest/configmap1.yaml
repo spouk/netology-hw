@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: changemultitoolports
+data:
+   http_multiportchange: "8888"
+   https_multiportchange: "4333"

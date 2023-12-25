@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task1
+  labels:
+    app: task1stock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task1stock
+  template:
+    metadata:
+      labels:
+        app: task1stock
+    spec:
+#      volumes:
+#        - name: shara
+#          persistentVolumeClaim:
+#            claimName: task-pv-claim1
+
+#-e HTTP_PORT=1180 -e HTTPS_PORT=11443
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        env:
+        - name: HTTP_PORT
+          value: 8888
+        - name: HTTPS_PORT
+          value: 4433
+        ports:
+        - containerPort:  80
+          name: http
+        - containerPort: 443
+          name: https
+#        ports:
+#        - containerPort:  80
+#          name: http
+#        - containerPort: 443
+#          name: https
+#        volumeMounts:
+#        - name: shara
+#          mountPath: /input/
+
+      - name: nginx
+        image: nginx:14.2
+        ports:
+        - name: httpnginx
+          containerPort: 80
+        - name: httpsnginx
+          containerPort: 443
+
+#        volumeMounts:
+#        - name: shara
+#          mountPath: /output/
+
+      restartPolicy: Always
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: task1stock-svc
+#spec:
+#  selector:
+#    app: task1stock
+#  ports:
+#  - name: http
+#    port: 7777
+#    targetPort: 80
+#  - name: https
+#    port: 7778
+#    targetPort: 443
+#
+#
+#

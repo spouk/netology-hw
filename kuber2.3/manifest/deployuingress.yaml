@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURhekNDQWxPZ0F3SUJBZ0lVRVlrcVJvY2hXYlVpWEN6TzR5emFLM1ZIYjlvd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1JURUxNQWtHQTFVRUJoTUNVbFV4RXpBUkJnTlZCQWdNQ2xOdmJXVXRVM1JoZEdVeElUQWZCZ05WQkFvTQpHRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MFpEQWVGdzB5TXpFeU1qUXhOek0xTVRKYUZ3MHlOREV5Ck1qTXhOek0xTVRKYU1FVXhDekFKQmdOVkJBWVRBbEpWTVJNd0VRWURWUVFJREFwVGIyMWxMVk4wWVhSbE1TRXcKSHdZRFZRUUtEQmhKYm5SbGNtNWxkQ0JYYVdSbmFYUnpJRkIwZVNCTWRHUXdnZ0VpTUEwR0NTcUdTSWIzRFFFQgpBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ2JQY2F6MWdkRHFOWlQwOFNNREJLZmZ6TjZ1eVhQeVVHM08vVDJ0aDRECjFJVGF0cVlmUUJ4ZnloVE9CY1hNem9mTjl2c2gwU0JOdThNeng1cUxVcFFmZzNsYjJLVi8wSE1uVTJHOXpvaXQKVFQwbHVmVmR3eVFEeXBWYjdMMkdEdE5GaXl2QytMb2ZwRnNieVN3NG1GaHBTTHREcHZ4Z0docGlXc041WnVIVwoyM1BaSnA4bEw4YmpGeGFWYXZYQktNME1xWkU0S1JWNkVvU2ZXZVhrRW8rVFVXRW1nblc1T3B0bnNnaFVIYXZnCm1JMHdZTEUrMGx6c281bXFSaUQrU3VQc01Hdlc1M3pvN05EYk1WdUtrOVUxV04vS2xPTkZUUXBpL0xPZ3BLTkIKVm43R2dVdUZEZmQ0ZjV6elc2VkFKYVM4RlhneUFQWjRSYmlPQmRvam5LSlRBZ01CQUFHalV6QlJNQjBHQTFVZApEZ1FXQkJRU1RxOStIVk1jaEQyU3o1QzNGQlVGUng5a1hEQWZCZ05WSFNNRUdEQVdnQlFTVHE5K0hWTWNoRDJTCno1QzNGQlVGUng5a1hEQVBCZ05WSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ0sKb2xSWERMMUdOWStCcjJ3VVJqZjVDZHg4MnFaQUg1VXRmcU9jUnhUc3hRNnRHMFZpejFBbkNNRXE5RDJUZ3hYMApJUmxIeS9STzRMUlNzMWVHSzJadjlTWU1BdFUvd1lmTWxteVVJRGtJRjVvL1RxMzZ3SnZtY2hJeHFEL3drL3FyCkpPdXZVNEY3M1BVaVdRQ3pkT1R2VHgvNFNZbEFZUUsvSTNSV1dRcVU3aExrakhlS3oxZnp6d0RuVGhGYlZqZksKWXhoRkwzbkdYcEE1djVLVjFrcDdDSFp1bHFKUThnVHFhNlBtNlhXUFFtVnlndGpNdnJhcitjNWt0ZWVuRGx5ZgpVL1dPT0VHNzJlMVBzb0JKVTBQUk15VlRsNDBybDg3VVhZYzBOdEJ2S0IzY05nZGY3VnZ5c0JtdDhHSDZpcG90CjQvKzFEY2YxaG9GWXdUTkhPcGg2Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRQ2JQY2F6MWdkRHFOWlQKMDhTTURCS2Zmek42dXlYUHlVRzNPL1QydGg0RDFJVGF0cVlmUUJ4ZnloVE9CY1hNem9mTjl2c2gwU0JOdThNegp4NXFMVXBRZmczbGIyS1YvMEhNblUyRzl6b2l0VFQwbHVmVmR3eVFEeXBWYjdMMkdEdE5GaXl2QytMb2ZwRnNiCnlTdzRtRmhwU0x0RHB2eGdHaHBpV3NONVp1SFcyM1BaSnA4bEw4YmpGeGFWYXZYQktNME1xWkU0S1JWNkVvU2YKV2VYa0VvK1RVV0VtZ25XNU9wdG5zZ2hVSGF2Z21JMHdZTEUrMGx6c281bXFSaUQrU3VQc01Hdlc1M3pvN05EYgpNVnVLazlVMVdOL0tsT05GVFFwaS9MT2dwS05CVm43R2dVdUZEZmQ0ZjV6elc2VkFKYVM4RlhneUFQWjRSYmlPCkJkb2puS0pUQWdNQkFBRUNnZ0VBQTNwMVRTcUlYa2ROTGhkZkRDelhYRVJnNzUvRkFkV1VKOHgwMU05MTByVUIKQnNUMERvQ2dQWTd0S1VTWUlVZzVHZWJBWFhnSjhrR21uWnhBbktaRGREd3FudlFTSzRiV0FrTWpCUldVQ0doUgo3SkV3MEdLVkdDU25LOHJVQk53NnYrdTZPa3FSUnNMTGtHRWFSWTAzdk1WUi9mckhia21IY1BSd2hzOXBlRXgvCmptYlhiNUdTc000NGhUWDRsay9FUUEvdy9Hakh5eW05dVA4YUFyU0I4NlB5UGJISUhEVHF3SGZ3a2hhTUF0REcKNC9VTG92cEpmUUFuLzhVRDdpbGl6TGNDY2NTcHB3QW8zdmZFQUJ1TWdieGtORGliZHh1elBZUStGYUk4UHZLegpPdXBrNmRrQ0psMHR5ZzJ1QjNFWlV4dUM4OTdMdFdUeTg4TWcrcEpYQ1FLQmdRRExhK1FBUmhkdUdrTDJZTSs2CjR3U3FJY3lweUMxVFYxYmJKY3NRK0o3RnZjVzNMOWsxZUtBOG1udUhrYXlXYjFXQWUyMkwvZTAxL2FqRHRscG0KUEdoS2Q4Um9OTVBNUWpwZ0ZjZVpwa2E4WE9uSm1XNjgvcVVSQUtKbTkrd3I4TXFLMnZUQUJiNHd3ZzhONEs4ZQphaTQ4RW41WG11a2hBS2o0TWZkMXR2Sjhyd0tCZ1FERFhkL001ajNJcXNpV2RHQ2pjZXFiY0RpeUxjMG1mUVZHCjBrejdOUzVKeFdBQVAyNFY1QWFkaFREeE9mRG5sQ1FrejhKSEdIWmtjdW9mMi93RkhrREZ4TE1YTXA3U2psS2cKdmJzZ3h4RCtVbFprS2E5N09peTdpQ1kzdGVPeWpwSG1JOHp0K3RyU2Mra1pGT2lJb2ZlUzl4bEx5S3hkNmcrego5UldQY0NWRm5RS0JnQmZVS3FBeGxic0xEbjhIOWkyQlBHR2xsZkRwaHcyMU5ISjFhZVV5Q245RmJLeTV5U3J2ClYyM2g5c2g1c3dyb1BjN1FKcFA0aWRvQ1BjdTNSNzJrSTk5ZFNqK2V0clR0cVNMcVNqaGdkdmJIdDRjckZ3TEMKblpseFJwVGpRK0lkMGN3VVBBbG1ZdElaV1dRWnhzbThUSEF6Qm1QQ3ZMNWw4bVVvalVGWHplMzNBb0dBWDhQYgpXWGdmSHdkQVRpZjcyd0tUS3VDR21pakRZRE4yYTdIWWxHY01LcE02ck1ScTlRWVNqQkptM0VnM28zekZmdG5zCmRLYzBHYWNPeHRFeHAxeWVDWk9TNmpNaEVUczhtNWlGYXRySnBMQzlzbG1Rc0VuaTlZWVduY1ptTi9lVTR3ZjMKZzB3dENXNVIrNzU1QWNqTEw5bzZKeURXQlM4ZnhXbkV5TXdES1MwQ2dZQitpYTNUeHo3V21Yem16UFNzQTFKRwpkWHpCR1d2bXRxNFVRVmducVIzeDlTV1c3dXYzcXN2dEJlNnpmekxBRklCZXVIenZkcTNxaWt3TFptNHpObHdYCm5yUmJZa2ZRR0t6dU9IZldrcmV2Y21ySTN0WVdBNXI3aUF4eE85cDNpbk1icGpPZllBMXBtd3IyM3kwSEZmL1UKc2YwUTk5ekE5a1VoajNsYnVjeUx3QT09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+kind: Secret
+metadata:
+  name: task2-tls
+type: kubernetes.io/tls
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginxresource
+data:
+   index.html: |
+       <!DOCTYPE html>
+       <html lang="en">
+       <head>
+           <meta charset="UTF-8">
+           <title>Title</title>
+       </head>
+       <body>
+       <h2>hello wordl from nginx with pod kubernetes</h2>
+       <hr>
+       <h4>visible page setting from configmap</h4>
+       </body>
+       </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task2
+  labels:
+    app: task2stock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task2stock
+  template:
+    metadata:
+      labels:
+        app: task2stock
+    spec:
+      volumes:
+      - name: configmap-volume
+        configMap:
+          name: nginxresource
+      containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+        - name: configmap-volume
+          mountPath: /usr/share/nginx/html/
+        ports:
+#        - name: http
+#          containerPort: 80
+        - name: https
+          containerPort: 443
+
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task2stock-svc
+spec:
+  selector:
+    app: task2stock
+  ports:
+#  - name: http
+#    port: 7777
+#    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - localkube15.com
+      secretName: task2-tls
+  ingressClassName: nginx
+  rules:
+  - host: localkube15.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: task2stock-svc
+            port:
+              number: 443
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: service-ingress-kube15
+  name: service-ingress-kube15
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    app: nginx-ingress
+status:
+  loadBalancer: {}
