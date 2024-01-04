@@ -1,0 +1,75 @@
+
+# deny all
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: default-deny
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+
+---
+# grant access frontend -> backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: grant-access-frontend-backend
+spec:
+  podSelector:
+    matchLabels:
+        app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend
+      ports:
+        - protocol: TCP
+          port: 80
+---
+# grant access frontend -> backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: grant-access-frontend-backend
+spec:
+  podSelector:
+    matchLabels:
+        app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend
+      ports:
+        - protocol: TCP
+          port: 80
+---
+# grant access backend -> cache
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: grant-access-frontend-backend
+spec:
+  podSelector:
+    matchLabels:
+        app: cache
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: backend
+      ports:
+        - protocol: TCP
+          port: 80

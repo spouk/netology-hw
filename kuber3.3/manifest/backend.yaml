@@ -1,0 +1,36 @@
+apiversion: apps/v1
+kind: deployment
+metadata:
+  namespace: app
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - containerport:  80
+          name: http
+---
+apiversion: v1
+kind: service
+metadata:
+  namespace: app
+  name: service-backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: tcp
+    port: 80
+

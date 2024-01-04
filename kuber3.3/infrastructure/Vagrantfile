@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+ENV["LC_ALL"] = "en_US.UTF-8"
+NodeCount = 2
+
+# install masternode
+Vagrant.configure("2") do |config|
+    config.vm.box = "centos/7"
+    config.vm.box_check_update = false
+    config.vm.provision "shell", path: "script.sh"
+    config.vm.define "masternode" do |mn|
+      mn.vm.hostname = "masternode"
+      mn.vm.provider :libvirt do |v|
+         v.driver = "kvm"
+         v.memory = "4096"
+         v.cpus = 2
+      end
+  end
+
+# install workers
+  (1..NodeCount).each do |i|
+    config.vm.provision "shell", path: "script.sh"
+    config.vm.define "centosvm0#{i}" do |node|
+      node.vm.box = "centos/7"
+      node.vm.provider :libvirt do |v|
+        v.memory = 2048
+        v.cpus = 2
+      end
+    end
+  end
+
+end

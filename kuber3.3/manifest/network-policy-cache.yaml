@@ -1,0 +1,20 @@
+# grant access backend -> cache
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: grant-access-backend-cache
+spec:
+  podSelector:
+    matchLabels:
+        app: cache
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: backend
+      ports:
+        - protocol: TCP
+          port: 80

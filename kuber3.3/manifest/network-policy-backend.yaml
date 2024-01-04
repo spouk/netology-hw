@@ -1,0 +1,21 @@
+---
+# grant access frontend -> backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    namespace: app
+    name: grant-access-frontend-backend
+spec:
+  podSelector:
+    matchLabels:
+        app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend
+      ports:
+        - protocol: TCP
+          port: 80
