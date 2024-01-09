@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploytask2
+  labels:
+    app: appupdate
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 20%
+      maxUnavailable: 20%
+  selector:
+    matchLabels:
+      app: appupdate
+  template:
+    metadata:
+      labels:
+        app: appupdate
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.28
+          ports:
+            - containerPort: 80
+        - name: multitool
+          image: wbitt/network-multitool
+          ports:
+            - containerPort:  8080
+              name: http
+            - containerPort: 44333
+              name: https
+          env:
+            - name: HTTP_PORT
+              value: "8080"
+            - name: HTTP_PORTS
+              value: "44344"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: serviceappupdate
+spec:
+  selector:
+    app: appupdate
+  ports:
+    - name: nginxport
+      protocol: TCP
+      port: 8888
+      targetPort: 80
+    - name: multiport
+      protocol: TCP
+      port: 8889
+      targetPort: 8080
+    - name: multiporthttps
+      protocol: TCP
+      port: 8890
+      targetPort: 44333
