@@ -1,0 +1,11 @@
+#cloud-config
+users:
+  - name: aleks
+    groups: sudo
+    shell: /bin/bash
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCp88myjeoS35j0aJxbH8eOTlfHJNIAIFRshhJUdl+hAxslBtwblR57X0mwO1eWXx6MEAMTT918TnCutktzplWeSPQdYAmXLOfaeLTDvAytSRVr+eEwg2SfbQcKJh6sgUD5H9cDdaSMkLvCoiieI9dPz9hUCPz6gBiKoxg2seGn0kw0AYeiOqJecoqPeZ4I0qkt6zD+reqydJQy+x9KdtEoH5zizYV6LUmQNpEf+/cBQyMFn2pmO8rOUwYgrAW8vlZ/2q4D+8ejoXdRPUA8uj5B7B93cifhB75reiIM/+bAf+LQajR+GlddK7QA9ruLIjmS5/M3aaI3Bjq4Bc9cv6PAE5qq6QgtGo2MobUTgKZs6Ve24vSJk3eXzenaldAIvRcjbVmvagzL+a2NCcARZlSawoDoH3uzBYG2smaRi+CSpj8jMRddFlUhRCvQQdkJ+WPoGqTeT8vYNZ4+oi8FRhjqBdY+Bgj/RakJEx8C9zlgOmw9qnVUOWDRzvxC6GzuVV0= spouk@labnode
+runcmd:
+  - rm -rf /var/www/html/index.html
+  - echo  "<!DOCTYPE html> <html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><h2>show image from bucket in yandex cloud</h2><hr><img src="https://storage.yandexcloud.net/aleksey.martynenko.13012024/helloworld.jpg" alt=""></body></html>" > /var/www/html/index.html
