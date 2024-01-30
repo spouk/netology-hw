@@ -19,81 +19,27 @@ variable "stockvars" {
     bucket_image       = "aleksey.martynenko.13012024"
   }
 }
-
-variable "zonelistpublicsubnet" {
-  description = "definitions objects subnet"
-  type        = object({
-    a = object({
-      name = string
-      zone = string
-      cidr = string
-    }),
-    b = object({
-      name = string
-      zone = string
-      cidr = string
-    }),
-    c = object({
-      name = string
-      zone = string
-      cidr = string
-    })
-
-  })
-  default = {
-    a = {
-      name = "public-a"
-      zone = "ru-central1-a"
-      cidr = "192.168.10.0/24"
-    },
-    b = {
-      name = "public-b"
-      zone = "ru-central1-b"
-      cidr = "192.168.20.0/24"
-    },
-    c = {
-      name = "public-c"
-      zone = "ru-central1-c"
-      cidr = "192.168.30.0/24"
-    },
-  }
+variable "zonelist" {
+  type        = list(string)
+  description = "list zones for make subnets in cluster use"
+  default     = ["ru-central1-a", "ru-central1-b", "ru-central1-c"]
 }
-variable "zonelistsubnet" {
-  description = "definitions objects subnet"
-  type        = object({
-    a = object({
-      name = string
-      zone = string
-      cidr = string
-    }),
-    b = object({
-      name = string
-      zone = string
-      cidr = string
-    })
-    c = object({
-      name = string
-      zone = string
-      cidr = string
-    })
-  })
-  default = {
-    a = {
-      name = "private-a"
-      zone = "ru-central1-a"
-      cidr = "10.1.0.0/16"
-    },
-    b = {
-      name = "private-b"
-      zone = "ru-central1-b"
-      cidr = "10.2.0.0/16"
-    },
-    c = {
-      name = "private-c"
-      zone = "ru-central1-c"
-      cidr = "10.3.0.0/16"
-    },
-
+#variable "zonelistmap" {
+#  type        = map(string)
+#  description = "map zones for make subnets in cluster use"
+#  default     = {
+#    "ru-central1-a" = "10.1.0.0/16"
+#    "ru-central1-b" = "10.2.0.0/16"
+#    "ru-central1-c" = "10.3.0.0/16"
+#  }
+#}
+variable "zonelistmap" {
+  type        = map(list(string))
+  description = "map zones for make subnets in cluster use"
+  default     = {
+    "a" = ["ru-central1-a", "10.1.0.0/16"]
+    "b" = ["ru-central1-b", "10.2.0.0/16"]
+    "c" = ["ru-central1-c", "10.3.0.0/16"]
   }
 }
 

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: phpmyadmin
+          image: phpmyadmin
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: PMA_HOST
+              value: rc1a-g1cxebzwykkh7c1q.mdb.yandexcloud.net
+            - name: PMA_PORT
+              value: "3306"
+            - name: PMA_USER
+              value: "userdb"
+            - name: PMA_PASSWORD
+              value: "12345678"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "FuckIO$24"
+  #            valueFrom:
+  #              secretKeyRef:
+  #                name: mysql-secrets
+  #                key: ROOT_PASSWORD
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-frontend
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
